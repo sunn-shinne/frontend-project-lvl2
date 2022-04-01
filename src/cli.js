@@ -1,11 +1,16 @@
 import fs from 'fs';
 import path from 'path';
 
-const readFile = (filepath, extention) => (
-  (extention === 'json') ? JSON.parse(fs.readFileSync(path.resolve(filepath))) : fs.readFileSync(path.resolve(filepath))
-);
+export const readFile = (filepath, extention) => {
+  switch (extention) {
+    case 'json':
+      return JSON.parse(fs.readFileSync(path.resolve(filepath)));
+    default:
+      return fs.readFileSync(path.resolve(filepath));
+  }
+};
 
-const genLineDiff = (key, data1, data2) => {
+export const genLineDiff = (key, data1, data2) => {
   if (!Object.hasOwn(data1, key) && Object.hasOwn(data2, key)) {
     return `  + ${key}: ${data2[key]}`;
   }
@@ -13,7 +18,7 @@ const genLineDiff = (key, data1, data2) => {
     return `  - ${key}: ${data1[key]}`;
   }
   if (data1[key] !== data2[key]) {
-    return [`  - ${key}: ${data1[key]}`, `  + ${key}: ${data2[key]}`];
+    return `  - ${key}: ${data1[key]}\n  + ${key}: ${data2[key]}`;
   }
   return `    ${key}: ${data1[key]}`;
 };
@@ -26,7 +31,7 @@ const genDiff = (filepath1, filepath2) => {
   const set = new Set([...Object.keys(data1), ...Object.keys(data2)]);
   const allKeys = [...set].sort();
 
-  const diffArr = allKeys.flatMap((key) => genLineDiff(key, data1, data2));
+  const diffArr = allKeys.map((key) => genLineDiff(key, data1, data2));
   const diff = `{\n${diffArr.join('\n')}\n}`;
 
   return diff;
