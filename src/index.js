@@ -1,12 +1,17 @@
-import fs from 'fs';
 import path from 'path';
+import { jsonParser, yamlParser } from './parsers.js';
 
-export const readFile = (filepath, extention) => {
-  switch (extention) {
-    case 'json':
-      return JSON.parse(fs.readFileSync(path.resolve(filepath)));
+export const readFile = (filepath) => {
+  switch (path.extname(filepath)) {
+    case '.json':
+      return jsonParser(filepath);
+
+    case '.yaml':
+    case '.yml':
+      return yamlParser(filepath);
+
     default:
-      return fs.readFileSync(path.resolve(filepath));
+      return jsonParser(filepath);
   }
 };
 
@@ -24,9 +29,8 @@ export const genLineDiff = (key, data1, data2) => {
 };
 
 const genDiff = (filepath1, filepath2) => {
-  const extention = filepath1.split('.').pop();
-  const data1 = readFile(filepath1, extention);
-  const data2 = readFile(filepath2, extention);
+  const data1 = readFile(filepath1);
+  const data2 = readFile(filepath2);
 
   const set = new Set([...Object.keys(data1), ...Object.keys(data2)]);
   const allKeys = [...set].sort();

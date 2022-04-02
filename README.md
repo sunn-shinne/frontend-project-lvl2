@@ -17,3 +17,4 @@ make test
 
 ### Get the difference of flat data
 [![asciicast](https://asciinema.org/a/ndqu6cuxUWXGfNThyDgwajob3.svg)](https://asciinema.org/a/ndqu6cuxUWXGfNThyDgwajob3)
+[![asciicast](https://asciinema.org/a/YonQqPNms8JnDabJR15DPaiiK.svg)](https://asciinema.org/a/YonQqPNms8JnDabJR15DPaiiK)
