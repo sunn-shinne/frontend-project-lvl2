@@ -1,4 +1,4 @@
-import isObject from './utilitys.js';
+import isObject from '../utilitys.js';
 
 const stylishValue = (data, level) => {
   if (isObject(data)) {
@@ -8,6 +8,10 @@ const stylishValue = (data, level) => {
   return data;
 };
 
-const stylish = (key, value, level, char = ' ') => `${' '.repeat(level)}${char} ${key}: ${stylishValue(value, level)}`;
+const stylish = (params) => params
+  .map(({
+    key, value, level, char,
+  }) => (`${' '.repeat(level)}${char} ${key}: ${stylishValue(value, level)}`))
+  .join('\n');
 
 export default stylish;
