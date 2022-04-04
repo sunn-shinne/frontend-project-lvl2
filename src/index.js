@@ -1,7 +1,9 @@
 import path from 'path';
 import { jsonParser, yamlParser } from './parsers.js';
+import stylish from './stylish.js';
+import isObject from './utilitys.js';
 
-export const readFile = (filepath) => {
+const readFile = (filepath) => {
   switch (path.extname(filepath)) {
     case '.json':
       return jsonParser(filepath);
@@ -15,30 +17,44 @@ export const readFile = (filepath) => {
   }
 };
 
-export const genLineDiff = (key, data1, data2) => {
+const genLineDiff = (key, data1, data2) => {
   if (!Object.hasOwn(data1, key) && Object.hasOwn(data2, key)) {
-    return `  + ${key}: ${data2[key]}`;
+    return [{ currentKey: key, value: data2[key], char: '+' }];
   }
   if (Object.hasOwn(data1, key) && !Object.hasOwn(data2, key)) {
-    return `  - ${key}: ${data1[key]}`;
+    return [{ currentKey: key, value: data1[key], char: '-' }];
   }
   if (data1[key] !== data2[key]) {
-    return `  - ${key}: ${data1[key]}\n  + ${key}: ${data2[key]}`;
+    return [{ currentKey: key, value: data1[key], char: '-' }, { currentKey: key, value: data2[key], char: '+' }];
   }
-  return `    ${key}: ${data1[key]}`;
+  return [{ currentKey: key, value: data1[key], char: ' ' }];
 };
 
 const genDiff = (filepath1, filepath2) => {
   const data1 = readFile(filepath1);
   const data2 = readFile(filepath2);
 
-  const set = new Set([...Object.keys(data1), ...Object.keys(data2)]);
-  const allKeys = [...set].sort();
+  const compareData = (value1, value2, level = 2) => {
+    const set = new Set([...Object.keys(value1), ...Object.keys(value2)]);
+    const allKeys = [...set].sort();
 
-  const diffArr = allKeys.map((key) => genLineDiff(key, data1, data2));
-  const diff = `{\n${diffArr.join('\n')}\n}`;
+    const diffArr = allKeys.map((key) => {
+      if (isObject(value1[key]) && isObject(value2[key])) {
+        return stylish(key, compareData(value1[key], value2[key], level + 4), level);
+      }
+      const diffParams = genLineDiff(key, value1, value2, level);
+      return diffParams
+        .map(({ currentKey, value, char }) => (
+          stylish(currentKey, value, level, char)
+        ))
+        .join('\n');
+    });
 
-  return diff;
+    const diff = `{\n${diffArr.join('\n')}\n${' '.repeat(level - 2)}}`;
+    return diff;
+  };
+  return compareData(data1, data2);
 };
 
+export { readFile };
 export default genDiff;

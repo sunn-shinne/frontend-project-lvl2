@@ -1,39 +1,26 @@
 import { test, expect, beforeAll } from '@jest/globals';
 import path from 'path';
 import { fileURLToPath } from 'url';
-import genDiff, { readFile, genLineDiff } from '../src/index.js';
-import { flatData1, flatData2 } from '../__fixtures__/parsedData.js';
+import genDiff from '../src/index.js';
 
-const flatDataDiff = '{\n  - follow: false\n    host: hexlet.io\n  - proxy: 123.234.53.22\n  - timeout: 50\n  + timeout: 20\n  + verbose: true\n}';
+const complexDataDiff = '{\n    common: {\n      + follow: false\n        setting1: Value 1\n      - setting2: 200\n      - setting3: true\n      + setting3: null\n      + setting4: blah blah\n      + setting5: {\n            key5: value5\n        }\n        setting6: {\n            doge: {\n              - wow: \n              + wow: so much\n            }\n            key: value\n          + ops: vops\n        }\n    }\n    group1: {\n      - baz: bas\n      + baz: bars\n        foo: bar\n      - nest: {\n            key: value\n        }\n      + nest: str\n    }\n  - group2: {\n        abc: 12345\n        deep: {\n            id: 45\n        }\n    }\n  + group3: {\n        deep: {\n            id: {\n                number: 45\n            }\n        }\n        fee: 100500\n    }\n}';
 
-let json1;
-let json2;
-let yaml1;
-let yml2;
+let complexJson1;
+let complexJson2;
+let complexYaml1;
+let complexYaml2;
 beforeAll(() => {
   const __filename = fileURLToPath(import.meta.url);
   const __dirname = path.dirname(__filename);
-  const getFixturePath = (filename) => path.join(__dirname, '..', '__fixtures__', filename);
-  json1 = getFixturePath('file1.json');
-  json2 = getFixturePath('file2.json');
-  yaml1 = getFixturePath('file1.yaml');
-  yml2 = getFixturePath('file2.yml');
+  const getFixturePath = (dir, filename) => path.join(__dirname, '..', '__fixtures__', dir, filename);
+
+  complexJson1 = getFixturePath('complexData', 'file1.json');
+  complexJson2 = getFixturePath('complexData', 'file2.json');
+  complexYaml1 = getFixturePath('complexData', 'file1.yaml');
+  complexYaml2 = getFixturePath('complexData', 'file2.yml');
 });
 
-test('test readFile()', () => {
-  expect(readFile(json1)).toEqual(flatData1);
-  expect(readFile(yaml1)).toEqual(flatData1);
-  expect(readFile(yml2)).toEqual(flatData2);
-});
-
-test('test genLineDiff()', () => {
-  expect(genLineDiff('timeout', flatData1, flatData2)).toBe('  - timeout: 50\n  + timeout: 20');
-  expect(genLineDiff('proxy', flatData1, flatData2)).toBe('  - proxy: 123.234.53.22');
-  expect(genLineDiff('verbose', flatData1, flatData2)).toBe('  + verbose: true');
-  expect(genLineDiff('host', flatData1, flatData2)).toBe('    host: hexlet.io');
-});
-
-test('test genDiff()', () => {
-  expect(genDiff(json1, json2)).toEqual(flatDataDiff);
-  expect(genDiff(json1, yml2)).toEqual(flatDataDiff);
+test('test genDiff() with complex data', () => {
+  expect(genDiff(complexJson1, complexJson2)).toEqual(complexDataDiff);
+  expect(genDiff(complexYaml1, complexYaml2)).toEqual(complexDataDiff);
 });

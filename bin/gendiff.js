@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { Command } from 'commander';
 import genDiff from '../src/index.js';
+import stylish from '../src/stylish.js';
 
 const program = new Command();
 
@@ -16,6 +17,6 @@ program
   });
 
 program
-  .option('-f, --format <type>', 'output format');
+  .option('-f, --format <type>', 'output format', stylish);
 
 program.parse();
