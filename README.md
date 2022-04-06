@@ -27,3 +27,6 @@ make test
 
 ### Get the difference as Plain text
 [![asciicast](https://asciinema.org/a/CtXYru3iz1QyYMMXyDkmBf49Z.svg)](https://asciinema.org/a/CtXYru3iz1QyYMMXyDkmBf49Z)
+
+### Get the difference as Json
+[![asciicast](https://asciinema.org/a/D5ahoIPA5sGlembmHI1ggwviE.svg)](https://asciinema.org/a/D5ahoIPA5sGlembmHI1ggwviE)

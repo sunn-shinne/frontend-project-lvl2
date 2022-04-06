@@ -17,6 +17,4 @@ program
     console.log(diff);
   });
 
-// program
-
 program.parse();

@@ -26,7 +26,11 @@ const format = (formatName, params) => {
     case 'plain':
       return plain(params);
 
-    default: return '';
+    case 'json':
+      return JSON.stringify(params);
+
+    default:
+      return stylish(params);
   }
 };
 
@@ -61,9 +65,9 @@ const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
 
     const diffParams = allKeys.map((key) => {
       if (isObject(value1[key]) && isObject(value2[key])) {
-        const value = compareData(value1[key], value2[key], level + 4, [...way, key]);
+        const children = compareData(value1[key], value2[key], level + 4, [...way, key]);
         return {
-          key, value, status: 'root', level, way,
+          key, children, status: 'root', level, way,
         };
       }
       return { ...getLineDiff(key, value1, value2), way: [...way, key], level };

@@ -28,7 +28,7 @@ const stylishLine = ({
 const stylish = (params) => {
   const inner = (node) => {
     if (node.status === 'root') {
-      return `${' '.repeat(node.level + 2)}${node.key}: {\n${node.value.flatMap(inner).join('')}${' '.repeat(node.level + 2)}}\n`;
+      return `${' '.repeat(node.level + 2)}${node.key}: {\n${node.children.flatMap(inner).join('')}${' '.repeat(node.level + 2)}}\n`;
     }
     return stylishLine(node);
   };

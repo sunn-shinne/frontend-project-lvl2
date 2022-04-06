@@ -28,7 +28,7 @@ const plainLine = ({
 const plain = (params) => {
   const inner = (node) => {
     if (node.status === 'root') {
-      return node.value.flatMap(inner);
+      return node.children.flatMap(inner);
     }
     return plainLine(node);
   };
