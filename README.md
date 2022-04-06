@@ -15,9 +15,15 @@ make install
 make test
 ```
 
-### Get the difference of flat data
+### Compare JSON/YAML/YML files 
 [![asciicast](https://asciinema.org/a/ndqu6cuxUWXGfNThyDgwajob3.svg)](https://asciinema.org/a/ndqu6cuxUWXGfNThyDgwajob3)
 [![asciicast](https://asciinema.org/a/YonQqPNms8JnDabJR15DPaiiK.svg)](https://asciinema.org/a/YonQqPNms8JnDabJR15DPaiiK)
 
-### Get the difference of complex data
+
+## There are three formats of result: 
+
+### Get the difference as Stylish
 [![asciicast](https://asciinema.org/a/yCL0RwODUUbYis85aV1WOpENb.svg)](https://asciinema.org/a/yCL0RwODUUbYis85aV1WOpENb)
+
+### Get the difference as Plain text
+[![asciicast](https://asciinema.org/a/CtXYru3iz1QyYMMXyDkmBf49Z.svg)](https://asciinema.org/a/CtXYru3iz1QyYMMXyDkmBf49Z)
