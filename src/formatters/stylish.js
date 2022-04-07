@@ -1,4 +1,4 @@
-import isObject from '../utilitys.js';
+import { isObject } from '../utilitys.js';
 
 const stylishValue = (data, level) => {
   if (isObject(data)) {

@@ -1,8 +1,9 @@
 import path from 'path';
+import _ from 'lodash';
 import { jsonParser, yamlParser } from './parsers.js';
 import stylish from './formatters/stylish.js';
 import plain from './formatters/plain.js';
-import isObject from './utilitys.js';
+import { isObject, hasProperty } from './utilitys.js';
 
 const readFile = (filepath) => {
   switch (path.extname(filepath)) {
@@ -35,12 +36,12 @@ const format = (formatName, params) => {
 };
 
 const getLineDiff = (key, data1, data2) => {
-  if (!Object.hasOwn(data1, key) && Object.hasOwn(data2, key)) {
+  if (!hasProperty(data1, key) && hasProperty(data2, key)) {
     return {
       key, from: null, to: data2[key], status: 'added',
     };
   }
-  if (Object.hasOwn(data1, key) && !Object.hasOwn(data2, key)) {
+  if (hasProperty(data1, key) && !hasProperty(data2, key)) {
     return {
       key, from: data1[key], to: null, status: 'removed',
     };
@@ -61,7 +62,7 @@ const genDiff = (filepath1, filepath2, formatName = 'stylish') => {
 
   const compareData = (value1, value2, level = 2, way = []) => {
     const set = new Set([...Object.keys(value1), ...Object.keys(value2)]);
-    const allKeys = [...set].sort();
+    const allKeys = _.sortBy([...set]);
 
     const diffParams = allKeys.map((key) => {
       if (isObject(value1[key]) && isObject(value2[key])) {

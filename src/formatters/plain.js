@@ -1,4 +1,4 @@
-import isObject from '../utilitys.js';
+import { isObject } from '../utilitys.js';
 
 const plainValue = (value) => {
   if (isObject(value)) {
