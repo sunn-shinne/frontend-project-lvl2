@@ -14,8 +14,9 @@ make install
 ```sh
 make test
 ```
+ 
+### Compare JSON/YAML/YML files** 
 
-### Compare JSON/YAML/YML files 
 [![asciicast](https://asciinema.org/a/ndqu6cuxUWXGfNThyDgwajob3.svg)](https://asciinema.org/a/ndqu6cuxUWXGfNThyDgwajob3)
 [![asciicast](https://asciinema.org/a/YonQqPNms8JnDabJR15DPaiiK.svg)](https://asciinema.org/a/YonQqPNms8JnDabJR15DPaiiK)
 
